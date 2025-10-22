@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block titulo %}{{ titulo }} | Sistema de Suscripciones{% endblock %}
+
+{% block contenido %}
+<div class="form-container">
+    <h2>{{ titulo }}</h2>
+    <form method="post" class="form-styled">
+        {% csrf_token %}
+        
+        {% for field in form %}
+        <div class="form-field">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.help_text %}
+            <small class="help-text">{{ field.help_text }}</small>
+            {% endif %}
+            {% for error in field.errors %}
+            <div class="error-message">{{ error }}</div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+        
+        <div class="actions">
+            <button type="submit" class="btn btn-primary">Guardar Plan</button>
+            <a href="{% url 'app_suscripciones:listar_planes' %}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

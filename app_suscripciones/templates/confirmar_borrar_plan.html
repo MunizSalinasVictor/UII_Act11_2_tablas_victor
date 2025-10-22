@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block titulo %}Eliminar Plan | Sistema de Suscripciones{% endblock %}
+
+{% block contenido %}
+<div class="confirmation-container">
+    <h2>¿Estás seguro de que quieres borrar el plan "{{ plan.nombre_plan }}"?</h2>
+    
+    <div class="warning-box">
+        <h3>⚠️ Advertencia</h3>
+        <p>Este plan tiene <strong>{{ plan.usuario_set.count }}</strong> usuario(s) asociado(s).</p>
+        <p>Si eliminas este plan, todos los usuarios asociados perderán su suscripción.</p>
+    </div>
+    
+    <form method="post">
+        {% csrf_token %}
+        <div class="actions">
+            <button type="submit" class="btn btn-danger">Sí, Borrar Plan</button>
+            <a href="{% url 'app_suscripciones:detalle_plan' plan.id %}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block titulo %}Planes de Suscripción | Sistema de Suscripciones{% endblock %}
+
+{% block contenido %}
+<div class="page-header">
+    <h2>Planes de Suscripción</h2>
+    <a href="{% url 'app_suscripciones:crear_plan' %}" class="btn btn-primary">+ Agregar Plan</a>
+</div>
+
+<div class="plans-grid">
+    {% for plan in planes %}
+    <div class="plan-card">
+        <div class="plan-header">
+            <h3>{{ plan.nombre_plan }}</h3>
+            <div class="plan-price">${{ plan.precio_mensual }}/mes</div>
+        </div>
+        
+        <div class="plan-features-list">
+            <div class="feature-item">
+                <span class="feature-icon">📱</span>
+                <span>{{ plan.dispositivos_simultaneos }} dispositivo{{ plan.dispositivos_simultaneos|pluralize }}</span>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">💾</span>
+                <span>Descargas offline: {{ plan.descargas_offline|yesno:"Sí,No" }}</span>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">📢</span>
+                <span>Anuncios: {{ plan.anuncios|yesno:"Sí,No" }}</span>
+            </div>
+        </div>
+        
+        <div class="plan-actions">
+            <a href="{% url 'app_suscripciones:detalle_plan' plan.id %}" class="btn btn-secondary">Ver Detalles</a>
+            <a href="{% url 'app_suscripciones:editar_plan' plan.id %}" class="btn btn-outline">✏️ Editar</a>
+        </div>
+    </div>
+    {% empty %}
+    <div class="no-plans">
+        <p>No hay planes de suscripción registrados.</p>
+        <a href="{% url 'app_suscripciones:crear_plan' %}" class="btn btn-primary">Crear Primer Plan</a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

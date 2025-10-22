@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block titulo %}{{ plan.nombre_plan }} | Sistema de Suscripciones{% endblock %}
+
+{% block contenido %}
+<article class="plan-detail">
+    <div class="plan-banner">
+        <div class="plan-main-info">
+            <h1>{{ plan.nombre_plan }}</h1>
+            <div class="plan-price-large">${{ plan.precio_mensual }}/mes</div>
+        </div>
+    </div>
+
+    <div class="detail-actions">
+        <a href="{% url 'app_suscripciones:editar_plan' plan.id %}" class="btn btn-secondary">✏️ Editar Plan</a>
+        <a href="{% url 'app_suscripciones:borrar_plan' plan.id %}" class="btn btn-danger">🗑️ Eliminar Plan</a>
+    </div>
+
+    <section class="plan-features-section">
+        <h2>Características del Plan</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>Dispositivos Simultáneos</h3>
+                <p class="feature-value">{{ plan.dispositivos_simultaneos }}</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💾</div>
+                <h3>Descargas Offline</h3>
+                <p class="feature-value">{{ plan.descargas_offline|yesno:"Disponible,No disponible" }}</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📢</div>
+                <h3>Anuncios</h3>
+                <p class="feature-value">{{ plan.anuncios|yesno:"Con anuncios,Sin anuncios" }}</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="plan-users-section">
+        <h2>Usuarios con este Plan ({{ usuarios_con_plan.count }})</h2>
+        {% if usuarios_con_plan %}
+        <div class="users-list">
+            {% for usuario in usuarios_con_plan %}
+            <div class="user-plan-item">
+                <div class="user-info">
+                    <strong>{{ usuario.email }}</strong>
+                    <span class="user-country">{{ usuario.pais }}</span>
+                    <span class="status-badge {{ usuario.estado|lower }}">{{ usuario.estado }}</span>
+                </div>
+                <a href="{% url 'app_suscripciones:detalle_usuario' usuario.id %}" class="btn btn-outline">Ver Usuario</a>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="empty-message">No hay usuarios suscritos a este plan.</p>
+        {% endif %}
+    </section>
+</article>
+{% endblock %}

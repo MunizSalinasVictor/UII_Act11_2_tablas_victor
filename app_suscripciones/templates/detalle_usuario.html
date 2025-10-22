@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block titulo %}Sistema de Suscripciones | {{ usuario.email }} {% endblock %}
+
+{% block contenido %}
+<article class="user-detail">
+    <div class="user-banner">
+        {% if usuario.foto_de_perfil %}
+            <img src="{{ usuario.foto_de_perfil.url }}" alt="Foto de {{ usuario.email }}" class="detail-photo">
+        {% else %}
+            <div class="detail-placeholder">👤</div>
+        {% endif %}
+        <div class="user-info">
+            <h1>{{ usuario.email }}</h1>
+            <div class="user-details">
+                <p><strong>País:</strong> {{ usuario.pais }}</p>
+                <p><strong>Fecha de Registro:</strong> {{ usuario.fecha_registro }}</p>
+                <p><strong>Estado:</strong> <span class="status-badge {{ usuario.estado|lower }}">{{ usuario.estado }}</span></p>
+                <p><strong>Plan:</strong> {{ usuario.plan.nombre_plan }}</p>
+                <p><strong>Precio:</strong> ${{ usuario.plan.precio_mensual }}/mes</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-actions">
+        <a href="{% url 'app_suscripciones:editar_usuario' usuario.id %}" class="btn btn-secondary">✏️ Editar</a>
+        <a href="{% url 'app_suscripciones:borrar_usuario' usuario.id %}" class="btn btn-danger">🗑️ Borrar</a>
+    </div>
+
+    <section class="plan-details">
+        <h2>Detalles del Plan</h2>
+        <div class="plan-features">
+            <div class="feature">
+                <span class="feature-label">Dispositivos Simultáneos:</span>
+                <span class="feature-value">{{ usuario.plan.dispositivos_simultaneos }}</span>
+            </div>
+            <div class="feature">
+                <span class="feature-label">Descargas Offline:</span>
+                <span class="feature-value">{{ usuario.plan.descargas_offline|yesno:"Sí,No" }}</span>
+            </div>
+            <div class="feature">
+                <span class="feature-label">Anuncios:</span>
+                <span class="feature-value">{{ usuario.plan.anuncios|yesno:"Sí,No" }}</span>
+            </div>
+        </div>
+    </section>
+</article>
+{% endblock %}
